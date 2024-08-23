@@ -9,21 +9,7 @@ import "@openzeppelin/contracts/utils/cryptography/MessageHashUtils.sol";
 contract GigBlocksReputationTesting4 is ERC721, Ownable {
     using ECDSA for bytes32;
 
-    event ReputationMinted(address indexed user, uint256 tokenId);
-    event ProjectPointsAdded(address indexed user, uint256 points);
-    event ReputationUpdated(address indexed user, uint8 socialMediaFlags, bool hasENS, uint256 completedProjects, uint256 totalCompletedProjects);
-
-    error NotGigBlocksMain();
-    error UserAlreadyHasReputationToken();
-    error UserDoesNotHaveReputationToken();
-
-    constructor() ERC721("GigBlocksReputation", "GBR") Ownable(msg.sender) {}
-
-    modifier onlyGigBlocksMain() {
-        if (msg.sender != gigBlocksMain) revert NotGigBlocksMain();
-        _;
-    }
-
+    address public authorizedSigner;
     address public gigBlocksMain;
 
     struct ReputationMetadata {
@@ -36,6 +22,31 @@ contract GigBlocksReputationTesting4 is ERC721, Ownable {
     mapping(address => uint256) public userToTokenId;
 
     uint256 private _tokenIds;
+
+    event ReputationMinted(address indexed user, uint256 tokenId);
+    event ProjectPointsAdded(address indexed user, uint256 points);
+    event ReputationUpdated(address indexed user, uint8 socialMediaFlags, bool hasENS, uint256 completedProjects, uint256 totalCompletedProjects);
+
+    error NotGigBlocksMain();
+    error UserAlreadyHasReputationToken();
+    error UserDoesNotHaveReputationToken();
+
+    constructor(address _authorizedSigner) ERC721("GigBlocksReputation", "GBR") Ownable(msg.sender) {
+        authorizedSigner = _authorizedSigner;
+    }
+
+    modifier onlyGigBlocksMain() {
+        if (msg.sender != gigBlocksMain) revert NotGigBlocksMain();
+        _;
+    }
+
+    function setGigBlocksMain(address _gigBlocksMain) external onlyOwner {
+        gigBlocksMain = _gigBlocksMain;
+    }
+
+    function setAuthorizedSigner(address _newSigner) external onlyOwner {
+        authorizedSigner = _newSigner;
+    }
 
     function mintReputation(address user) external onlyGigBlocksMain {
         if (userToTokenId[user] != 0) revert UserAlreadyHasReputationToken();
