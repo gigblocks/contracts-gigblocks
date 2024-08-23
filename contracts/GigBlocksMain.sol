@@ -1,9 +1,9 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.24;
 
-import "./GigBlocksUserManager.sol";
+import "./GigBlocksView.sol";
 
-contract GigBlocksMainTesting2 is GigBlocksUserManager {
+contract GigBlocksMainTesting2 is GigBlocksView {
     function supportsInterface(bytes4 interfaceId) public view virtual override returns (bool) {
         return super.supportsInterface(interfaceId);
     }

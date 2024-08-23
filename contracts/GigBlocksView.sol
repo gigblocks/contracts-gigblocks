@@ -20,6 +20,12 @@ abstract contract GigBlocksView is GigBlocksJobManagement {
         return result;
     }
 
+    function getJobById(uint256 _jobId) external view override returns (Job memory) {
+        Job memory job = jobs[_jobId];
+        if (job.client == address(0)) revert JobDoesNotExist();
+        return job;
+    }
+
     function getActiveJobCount() public view override returns (uint256) {
         return activeJobs.length;
     }

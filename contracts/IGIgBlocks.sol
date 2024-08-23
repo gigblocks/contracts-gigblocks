@@ -28,8 +28,10 @@ interface IGigBlocks {
 
     //Job Functions
     function createJob(string memory _jobDetailsIPFS, GigBlocksEnums.JobCategory _category) external;
+    function updateJobDetails(uint256 _jobId, string calldata _jobDetailsIPFS) external;
 
     //View Functions
     function getActiveJobs(uint256 _offset, uint256 _limit) external view returns (Job[] memory);
+    function getJobById(uint256 _jobId) external view returns (Job memory);
     function getActiveJobCount() external view returns (uint256);
 }

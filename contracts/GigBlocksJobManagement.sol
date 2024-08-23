@@ -26,4 +26,12 @@ abstract contract GigBlocksJobManagement is GigBlocksBase {
 
         emit JobCreated(newJobId, msg.sender, _jobDetailsIPFS, 0, _category, 0);
     }
+
+    function updateJobDetails(uint256 _jobId, string calldata _jobDetailsIPFS) external override nonReentrant {
+        Job storage job = jobs[_jobId];
+        if (job.client != msg.sender) revert NotJobOwner();
+        job.jobDetailsIPFS = _jobDetailsIPFS;
+
+        emit JobUpdated(_jobId, _jobDetailsIPFS);
+    }
 }
