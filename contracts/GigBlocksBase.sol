@@ -25,6 +25,8 @@ abstract contract GigBlocksBase is Ownable, GigBlocksUserManager, IGigBlocks {
     event ApplicationSubmitted(uint256 indexed jobId, address indexed applicant);
     event PaymentDeposited(uint256 indexed jobId, address indexed payer, uint256 amount);
     event FreelancerAssigned(uint256 indexed jobId, address indexed freelancer, uint256 payment, uint256 deadline);
+    event JobCompleted(uint256 indexed jobId);
+    event JobApproved(uint256 indexed jobId);
 
     // Errors
     error OffsetOutOfBounds();
@@ -37,6 +39,8 @@ abstract contract GigBlocksBase is Ownable, GigBlocksUserManager, IGigBlocks {
     error InvalidPaymentAmount();
     error InvalidDeadline();
     error PaymentAlreadyDeposited();
+    error JobDeadlinePassed();
+    error FreelancerNotAssigned();
 
     constructor() GigBlocksUserManager() Ownable(msg.sender) {}   
 

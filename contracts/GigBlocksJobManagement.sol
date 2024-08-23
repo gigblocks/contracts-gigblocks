@@ -73,4 +73,24 @@ abstract contract GigBlocksJobManagement is GigBlocksBase {
         
         emit FreelancerAssigned(_jobId, _freelancer, _payment, _deadline);
     }
+
+    function completeJob(uint256 _jobId) external override nonReentrant {
+        Job storage job = jobs[_jobId];
+        if (job.freelancer != msg.sender) revert FreelancerNotAssigned();
+        if (job.status != GigBlocksEnums.JobStatus.InProgress) revert InvalidJobStatus();
+        if (block.timestamp > job.deadline) revert JobDeadlinePassed();
+
+        job.status = GigBlocksEnums.JobStatus.Completed;
+        emit JobCompleted(_jobId);
+    }
+
+    function approveJob(uint256 _jobId) external override nonReentrant {
+        Job storage job = jobs[_jobId];
+        if (job.client != msg.sender) revert NotJobOwner();
+        if (job.status != GigBlocksEnums.JobStatus.Completed) revert InvalidJobStatus();
+
+        job.status = GigBlocksEnums.JobStatus.Approved;
+
+        emit JobApproved(_jobId);
+    }
 }
