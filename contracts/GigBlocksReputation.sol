@@ -11,10 +11,14 @@ contract GigBlocksReputationTesting4 is ERC721, Ownable {
 
     event ReputationMinted(address indexed user, uint256 tokenId);
 
+    error NotGigBlocksMain();
+    error UserAlreadyHasReputationToken();
+    error UserDoesNotHaveReputationToken();
+
     constructor() ERC721("GigBlocksReputation", "GBR") Ownable(msg.sender) {}
 
     modifier onlyGigBlocksMain() {
-        require(msg.sender == gigBlocksMain, "Caller is not the GigBlocksMain contract");
+        if (msg.sender != gigBlocksMain) revert NotGigBlocksMain();
         _;
     }
 
@@ -32,7 +36,7 @@ contract GigBlocksReputationTesting4 is ERC721, Ownable {
     uint256 private _tokenIds;
 
     function mintReputation(address user) external onlyGigBlocksMain {
-        require(userToTokenId[user] == 0, "User already has a reputation token");
+        if (userToTokenId[user] != 0) revert UserAlreadyHasReputationToken();
 
         _tokenIds++;
         uint256 newTokenId = _tokenIds;
@@ -42,5 +46,12 @@ contract GigBlocksReputationTesting4 is ERC721, Ownable {
         userToTokenId[user] = newTokenId;
 
         emit ReputationMinted(user, newTokenId);
+    }
+
+    function getReputation(address user) external view onlyGigBlocksMain returns (uint8 socialMediaFlags, bool hasENS, uint256 completedProjects) {
+        uint256 tokenId = userToTokenId[user];
+        if (tokenId == 0) revert UserDoesNotHaveReputationToken();
+        ReputationMetadata memory metadata = reputationMetadata[tokenId];
+        return (metadata.socialMediaFlags, metadata.hasENS, metadata.completedProjects);
     }
 }
