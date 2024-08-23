@@ -1,12 +1,14 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.24;
 
-import "@openzeppelin/contracts/access/AccessControl.sol";
 import "@openzeppelin/contracts/utils/ReentrancyGuard.sol";
 import "./GigBlocksEnums.sol";
+import "./GigBlocksReputation.sol";
 
-abstract contract GigBlocksUserManager is AccessControl, ReentrancyGuard {
+abstract contract GigBlocksUserManager is ReentrancyGuard {
     using GigBlocksEnums for GigBlocksEnums.JobCategory;
+
+    GigBlocksReputationTesting4 public reputationContract;
 
     struct UserProfile {
         string profileIPFS;
@@ -25,6 +27,10 @@ abstract contract GigBlocksUserManager is AccessControl, ReentrancyGuard {
     error UserAlreadyRegistered();
     error InvalidUserType();
     error UserNotRegistered();
+
+    constructor(address _reputationContractAddress) {
+        reputationContract = GigBlocksReputationTesting4(_reputationContractAddress);
+    }
 
     function register(
         string calldata _profileIPFS,

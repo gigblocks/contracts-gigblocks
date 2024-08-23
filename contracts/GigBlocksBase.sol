@@ -46,7 +46,7 @@ abstract contract GigBlocksBase is Ownable, GigBlocksUserManager, IGigBlocks {
     error PaymentAlreadyReleased();
     error JobNotApproved();
 
-    constructor() GigBlocksUserManager() Ownable(msg.sender) {
+    constructor(address _reputationContractAddress) GigBlocksUserManager(_reputationContractAddress) Ownable(msg.sender) {
         platformFeePercentage = 30; // 0.3%
     }   
 

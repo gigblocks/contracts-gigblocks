@@ -4,6 +4,8 @@ pragma solidity ^0.8.24;
 import "./GigBlocksJobManagement.sol";
 
 abstract contract GigBlocksView is GigBlocksJobManagement {
+    constructor(address _reputationContractAddress) GigBlocksJobManagement(_reputationContractAddress) {}
+    
     function getActiveJobs(uint256 _offset, uint256 _limit) external view override returns (Job[] memory) {
         uint256 totalActiveJobs = activeJobs.length;
         if (_offset >= totalActiveJobs) revert OffsetOutOfBounds();
