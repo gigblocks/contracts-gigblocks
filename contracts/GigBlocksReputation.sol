@@ -10,6 +10,8 @@ contract GigBlocksReputationTesting4 is ERC721, Ownable {
     using ECDSA for bytes32;
 
     event ReputationMinted(address indexed user, uint256 tokenId);
+    event ProjectPointsAdded(address indexed user, uint256 points);
+    event ReputationUpdated(address indexed user, uint8 socialMediaFlags, bool hasENS, uint256 completedProjects, uint256 totalCompletedProjects);
 
     error NotGigBlocksMain();
     error UserAlreadyHasReputationToken();
@@ -46,6 +48,16 @@ contract GigBlocksReputationTesting4 is ERC721, Ownable {
         userToTokenId[user] = newTokenId;
 
         emit ReputationMinted(user, newTokenId);
+    }
+
+    function incrementCompletedProjects(address user) external onlyGigBlocksMain {
+        uint256 tokenId = userToTokenId[user];
+        if (tokenId == 0) revert UserDoesNotHaveReputationToken();
+
+        ReputationMetadata storage metadata = reputationMetadata[tokenId];
+
+        emit ProjectPointsAdded(user, 1);
+        emit ReputationUpdated(user, metadata.socialMediaFlags, metadata.hasENS, metadata.completedProjects, metadata.completedProjects);
     }
 
     function getReputation(address user) external view onlyGigBlocksMain returns (uint8 socialMediaFlags, bool hasENS, uint256 completedProjects) {
