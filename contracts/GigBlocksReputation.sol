@@ -21,6 +21,7 @@ contract GigBlocksReputationTesting4 is ERC721, Ownable {
     mapping(uint256 => ReputationMetadata) public reputationMetadata;
     mapping(address => uint256) public userToTokenId;
 
+    uint256 constant REQUIRED_PROJECTS_FOR_ENS = 2;
     uint256 private _tokenIds;
 
     event ReputationMinted(address indexed user, uint256 tokenId);
@@ -110,5 +111,11 @@ contract GigBlocksReputationTesting4 is ERC721, Ownable {
         if (tokenId == 0) revert UserDoesNotHaveReputationToken();
         ReputationMetadata memory metadata = reputationMetadata[tokenId];
         return (metadata.socialMediaFlags, metadata.hasENS, metadata.completedProjects);
+    }
+
+    function isEligibleForENS(address user) public view onlyGigBlocksMain returns (bool) {
+        uint256 tokenId = userToTokenId[user];
+        if (tokenId == 0) revert UserDoesNotHaveReputationToken();
+        return reputationMetadata[tokenId].completedProjects >= REQUIRED_PROJECTS_FOR_ENS;
     }
 }
