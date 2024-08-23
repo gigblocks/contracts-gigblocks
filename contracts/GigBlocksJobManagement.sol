@@ -34,4 +34,23 @@ abstract contract GigBlocksJobManagement is GigBlocksBase {
 
         emit JobUpdated(_jobId, _jobDetailsIPFS);
     }
+
+    function applyForJob(uint256 _jobId, string memory _name, string memory _email, uint256 _bidAmount, uint256 _bidTime, string memory _coverLetter) external {
+        if (_jobId > jobIds.length || _jobId <= 0) revert InvalidJobId();
+        Job storage job = jobs[_jobId];
+        if (job.status != GigBlocksEnums.JobStatus.Open) revert InvalidJobStatus();
+
+        jobApplicants[_jobId].push(Applicant({
+            freelancerName: _name,
+            freelancerWalletAddress: msg.sender,
+            freelancerEmail: _email,
+            bidAmount: _bidAmount,
+            bidTime: _bidTime,
+            coverLetter: _coverLetter
+        }));
+
+        job.applicantCount++;
+
+        emit ApplicationSubmitted(_jobId, msg.sender);
+    }
 }
