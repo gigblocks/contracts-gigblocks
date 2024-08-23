@@ -28,13 +28,16 @@ contract GigBlocksReputationTesting4 is ERC721, Ownable {
     event ProjectPointsAdded(address indexed user, uint256 points);
     event ReputationUpdated(address indexed user, uint8 socialMediaFlags, bool hasENS, uint256 completedProjects, uint256 totalCompletedProjects);
     event SocialMediaConnected(address indexed user, string platform);
-
+    event ENSClaimed(address indexed user);
+    
     error NotGigBlocksMain();
     error UserAlreadyHasReputationToken();
     error UserDoesNotHaveReputationToken();
     error InvalidSignature();
     error InvalidPlatform();
     error PlatformAlreadyConnected();
+    error UserIsNotEligibleForENS();
+    error ENSAlreadyClaimed();
 
     constructor(address _authorizedSigner) ERC721("GigBlocksReputation", "GBR") Ownable(msg.sender) {
         authorizedSigner = _authorizedSigner;
@@ -93,6 +96,17 @@ contract GigBlocksReputationTesting4 is ERC721, Ownable {
         metadata.socialMediaFlags |= flag;
         
         emit SocialMediaConnected(user, platform);
+    }
+
+    function claimENS(address user) external onlyGigBlocksMain {
+        if (!isEligibleForENS(user)) revert UserIsNotEligibleForENS();
+        uint256 tokenId = userToTokenId[user];
+        ReputationMetadata storage metadata = reputationMetadata[tokenId];
+        if (metadata.hasENS) revert ENSAlreadyClaimed();
+
+        metadata.hasENS = true;
+        emit ENSClaimed(user);
+        emit ReputationUpdated(user, metadata.socialMediaFlags, true, metadata.completedProjects, metadata.completedProjects);
     }
 
     function incrementCompletedProjects(address user) external onlyGigBlocksMain {

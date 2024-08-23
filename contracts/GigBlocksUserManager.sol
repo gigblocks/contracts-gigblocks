@@ -71,6 +71,11 @@ abstract contract GigBlocksUserManager is ReentrancyGuard {
         reputationContract.connectSocialMedia(msg.sender, platform, signature);
     }
 
+    function claimENS() external nonReentrant {
+        if (users[msg.sender].flags & 1 == 0) revert UserNotRegistered();
+        reputationContract.claimENS(msg.sender);
+    }
+
     function getReputation(address _user) external view returns (uint8 socialMediaFlags, bool hasENS, uint256 completedProjects) {
         if (users[_user].flags & 1 == 0) revert UserNotRegistered();
         return reputationContract.getReputation(_user);
