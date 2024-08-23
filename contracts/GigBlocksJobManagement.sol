@@ -93,4 +93,19 @@ abstract contract GigBlocksJobManagement is GigBlocksBase {
 
         emit JobApproved(_jobId);
     }
+
+    function claimPayment(uint256 _jobId) external override nonReentrant {
+        Job storage job = jobs[_jobId];
+        if (job.freelancer != msg.sender) revert FreelancerNotAssigned();
+        if (job.status != GigBlocksEnums.JobStatus.Approved) revert JobNotApproved();
+        if (job.isPaid) revert PaymentAlreadyReleased();
+
+        job.isPaid = true;
+        uint256 amountToRelease = _releasePayment(_jobId, payable(msg.sender));
+        _removeActiveJob(_jobId);
+
+        payable(msg.sender).transfer(amountToRelease);
+
+        emit PaymentReleased(_jobId, msg.sender, amountToRelease);
+    }
 }

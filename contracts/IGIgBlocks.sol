@@ -41,7 +41,8 @@ interface IGigBlocks {
     function assignFreelancer(uint256 _jobId, address _freelancer, uint256 _payment, uint256 _deadline) external payable;
     function completeJob(uint256 _jobId) external;
     function approveJob(uint256 _jobId) external;
-    
+    function claimPayment(uint256 _jobId) external;
+
     //View Functions
     function getActiveJobs(uint256 _offset, uint256 _limit) external view returns (Job[] memory);
     function getJobById(uint256 _jobId) external view returns (Job memory);
