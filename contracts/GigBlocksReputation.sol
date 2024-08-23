@@ -10,4 +10,15 @@ contract GigBlocksReputationTesting4 is ERC721, Ownable {
     using ECDSA for bytes32;
 
     constructor() ERC721("GigBlocksReputation", "GBR") Ownable(msg.sender) {}
+
+    address public gigBlocksMain;
+
+    struct ReputationMetadata {
+        uint8 socialMediaFlags;
+        bool hasENS;
+        uint256 completedProjects;
+    }
+
+    mapping(uint256 => ReputationMetadata) public reputationMetadata;
+    mapping(address => uint256) public userToTokenId;
 }
