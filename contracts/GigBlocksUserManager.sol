@@ -49,6 +49,7 @@ abstract contract GigBlocksUserManager is ReentrancyGuard {
         });
 
         userAddresses.push(msg.sender);
+        reputationContract.mintReputation(msg.sender);
 
         emit UserRegistered(msg.sender, block.timestamp, _isFreelancer, _isClient);
     }
@@ -63,6 +64,11 @@ abstract contract GigBlocksUserManager is ReentrancyGuard {
         if (users[msg.sender].flags & 1 == 0) revert UserNotRegistered();
         users[msg.sender].preferences = _preferences;
         emit PreferencesUpdated(msg.sender, _preferences);
+    }
+
+    function getReputation(address _user) external view returns (uint8 socialMediaFlags, bool hasENS, uint256 completedProjects) {
+        if (users[_user].flags & 1 == 0) revert UserNotRegistered();
+        return reputationContract.getReputation(_user);
     }
 
     function getUserProfile(address _user) external view returns (UserProfile memory) {

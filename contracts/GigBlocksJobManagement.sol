@@ -92,6 +92,7 @@ abstract contract GigBlocksJobManagement is GigBlocksBase {
         if (job.status != GigBlocksEnums.JobStatus.Completed) revert InvalidJobStatus();
 
         job.status = GigBlocksEnums.JobStatus.Approved;
+        reputationContract.incrementCompletedProjects(msg.sender);
 
         emit JobApproved(_jobId);
     }
@@ -107,6 +108,7 @@ abstract contract GigBlocksJobManagement is GigBlocksBase {
         _removeActiveJob(_jobId);
 
         payable(msg.sender).transfer(amountToRelease);
+        reputationContract.incrementCompletedProjects(msg.sender);
 
         emit PaymentReleased(_jobId, msg.sender, amountToRelease);
     }
