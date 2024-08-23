@@ -81,6 +81,11 @@ abstract contract GigBlocksUserManager is ReentrancyGuard {
         return reputationContract.getReputation(_user);
     }
 
+    function getReputationScore(address _user) external view returns (uint256) {
+        require(users[_user].flags & 1 != 0, "User is not registered");
+        return reputationContract.getReputationScore(_user);
+    }
+
     function getUserProfile(address _user) external view returns (UserProfile memory) {
         return users[_user];
     }
