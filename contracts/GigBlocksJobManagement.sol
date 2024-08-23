@@ -53,4 +53,24 @@ abstract contract GigBlocksJobManagement is GigBlocksBase {
 
         emit ApplicationSubmitted(_jobId, msg.sender);
     }
+
+    function assignFreelancer(uint256 _jobId, address _freelancer, uint256 _payment, uint256 _deadline) external payable nonReentrant {
+        Job storage job = jobs[_jobId];
+        if (job.client != msg.sender) revert NotJobOwner();
+        if (job.status != GigBlocksEnums.JobStatus.Open) revert InvalidJobStatus();
+        if (msg.value != _payment) revert InvalidPaymentAmount();
+        if (!isRegistered(_freelancer)) revert UserNotRegistered();
+        if (!isFreelancer(_freelancer)) revert NotFreelancer();
+        if (_deadline <= block.timestamp) revert InvalidDeadline();
+
+        job.freelancer = _freelancer;
+        job.payment = _payment;
+        job.deadline = _deadline;
+        job.status = GigBlocksEnums.JobStatus.InProgress;
+
+        _depositPayment(_jobId, msg.sender);
+        _removeActiveJob(_jobId);
+        
+        emit FreelancerAssigned(_jobId, _freelancer, _payment, _deadline);
+    }
 }
