@@ -20,5 +20,9 @@ abstract contract GigBlocksBase is Ownable, GigBlocksUserManager, IGigBlocks {
     // Events
     event JobCreated(uint256 indexed jobId, address indexed client, string jobDetailsIPFS, uint256 payment, GigBlocksEnums.JobCategory category, uint256 deadline);
 
+    // Errors
+    error OffsetOutOfBounds();
+    error NotClient();
+
     constructor() GigBlocksUserManager() Ownable(msg.sender) {}   
 }

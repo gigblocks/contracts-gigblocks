@@ -31,5 +31,5 @@ interface IGigBlocks {
 
     //View Functions
     function getActiveJobs(uint256 _offset, uint256 _limit) external view returns (Job[] memory);
-
+    function getActiveJobCount() external view returns (uint256);
 }
