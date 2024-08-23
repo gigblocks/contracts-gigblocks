@@ -55,6 +55,7 @@ contract GigBlocksReputationTesting4 is ERC721, Ownable {
         if (tokenId == 0) revert UserDoesNotHaveReputationToken();
 
         ReputationMetadata storage metadata = reputationMetadata[tokenId];
+        metadata.completedProjects++;
 
         emit ProjectPointsAdded(user, 1);
         emit ReputationUpdated(user, metadata.socialMediaFlags, metadata.hasENS, metadata.completedProjects, metadata.completedProjects);
