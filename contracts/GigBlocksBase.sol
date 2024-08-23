@@ -6,4 +6,19 @@ import "./IGigBlocks.sol";
 import "./GigBlocksUserManager.sol";
 import "./GigBlocksEnums.sol";
 
-abstract contract GigBlocksBase is Ownable, GigBlocksUserManager, IGigBlocks {}
+abstract contract GigBlocksBase is Ownable, GigBlocksUserManager, IGigBlocks {
+    using GigBlocksEnums for GigBlocksEnums.JobStatus;
+    using GigBlocksEnums for GigBlocksEnums.JobCategory;
+
+    // Mappings
+    mapping(uint256 => Job) public jobs;
+
+    // State Variables
+    uint256[] public jobIds;
+    uint256[] public activeJobs;
+
+    // Events
+    event JobCreated(uint256 indexed jobId, address indexed client, string jobDetailsIPFS, uint256 payment, GigBlocksEnums.JobCategory category, uint256 deadline);
+
+    constructor() GigBlocksUserManager() Ownable(msg.sender) {}   
+}
