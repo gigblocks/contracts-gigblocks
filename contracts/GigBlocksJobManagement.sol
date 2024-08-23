@@ -9,6 +9,8 @@ abstract contract GigBlocksJobManagement is GigBlocksBase {
     function createJob(string calldata _jobDetailsIPFS, GigBlocksEnums.JobCategory _category) external override nonReentrant {
         if (!isRegistered(msg.sender)) revert UserNotRegistered();
         if (!isClient(msg.sender)) revert NotClient();
+        uint256 reputationScore = reputationContract.getReputationScore(msg.sender);
+        if (reputationScore < 10) revert InsufficientReputationScore();
 
         uint256 newJobId = uint256(jobIds.length + 1);
         jobIds.push(newJobId);
@@ -41,6 +43,10 @@ abstract contract GigBlocksJobManagement is GigBlocksBase {
         if (_jobId > jobIds.length || _jobId <= 0) revert InvalidJobId();
         Job storage job = jobs[_jobId];
         if (job.status != GigBlocksEnums.JobStatus.Open) revert InvalidJobStatus();
+        if (!isRegistered(msg.sender)) revert UserNotRegistered();
+        if (!isFreelancer(msg.sender)) revert NotFreelancer();
+        uint256 reputationScore = reputationContract.getReputationScore(msg.sender);
+        if (reputationScore < 10) revert InsufficientReputationScore();
 
         jobApplicants[_jobId].push(Applicant({
             freelancerName: _name,
