@@ -6,7 +6,7 @@ import "@openzeppelin/contracts/access/Ownable.sol";
 import "@openzeppelin/contracts/utils/cryptography/ECDSA.sol";
 import "@openzeppelin/contracts/utils/cryptography/MessageHashUtils.sol";
 
-contract GigBlocksReputationTesting5 is ERC721, Ownable {
+contract GigBlocksReputationTesting6 is ERC721, Ownable {
     using ECDSA for bytes32;
 
     address public authorizedSigner;

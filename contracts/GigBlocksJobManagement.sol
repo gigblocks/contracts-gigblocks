@@ -2,9 +2,13 @@
 pragma solidity ^0.8.24;
 
 import "./GigBlocksBase.sol";
+import "./IGigBlocksReputation.sol";
 
 abstract contract GigBlocksJobManagement is GigBlocksBase {
-    constructor(address _reputationContractAddress) GigBlocksBase(_reputationContractAddress) {}
+
+    constructor(address _reputationContractAddress) GigBlocksBase(_reputationContractAddress) {
+        reputationContract = IGigBlocksReputation(_reputationContractAddress);
+    }
     
     function createJob(string calldata _jobDetailsIPFS, GigBlocksEnums.JobCategory _category) external override nonReentrant {
         if (!isRegistered(msg.sender)) revert UserNotRegistered();

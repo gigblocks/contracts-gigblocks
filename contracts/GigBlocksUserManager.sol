@@ -3,12 +3,12 @@ pragma solidity ^0.8.24;
 
 import "@openzeppelin/contracts/utils/ReentrancyGuard.sol";
 import "./GigBlocksEnums.sol";
-import "./GigBlocksReputation.sol";
+import "./IGigBlocksReputation.sol";
 
 abstract contract GigBlocksUserManager is ReentrancyGuard {
     using GigBlocksEnums for GigBlocksEnums.JobCategory;
 
-    GigBlocksReputationTesting5 public reputationContract;
+    IGigBlocksReputation public reputationContract;
 
     struct UserProfile {
         string profileIPFS;
@@ -44,7 +44,7 @@ abstract contract GigBlocksUserManager is ReentrancyGuard {
     error CannotRateSelf();
 
     constructor(address _reputationContractAddress) {
-        reputationContract = GigBlocksReputationTesting5(_reputationContractAddress);
+        reputationContract = IGigBlocksReputation(_reputationContractAddress);
     }
 
     function register(
