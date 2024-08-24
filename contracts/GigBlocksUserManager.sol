@@ -122,6 +122,11 @@ abstract contract GigBlocksUserManager is ReentrancyGuard {
         return reputationContract.getReputationScore(_user);
     }
 
+    function isEligibleForENS(address _user) external view returns (bool) {
+        if (!isRegistered(_user)) revert UserNotRegistered();
+        return reputationContract.isEligibleForENS(_user);
+    }
+
     function getUserRatings(address _user, uint256 _offset, uint256 _limit) external view returns (Rating[] memory) {
         if (!isRegistered(_user)) revert UserNotRegistered();
         
