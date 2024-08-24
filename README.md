@@ -1,39 +1,53 @@
-# GigBlocks
+# GigBlocks Smart Contracts
 
-GigBlocks is a decentralized freelancing platform built on blockchain technology. It enables secure, transparent, and efficient interactions between clients and freelancers.
+This repository contains the smart contracts for the GigBlocks decentralized freelancing platform built on the Scroll blockchain. GigBlocks aims to revolutionize the freelancing industry by providing a transparent, secure, and decentralized platform for global freelancers and clients.
 
-## Key Components
+## Table of Contents
 
-### GigBlocksMain.sol
-The main contract that ties together all the functionality of the GigBlocks platform.
+1. [Overview](#overview)
+2. [Contract Structure](#contract-structure)
+3. [Key Features](#key-features)
 
-### GigBlocksJobManagement.sold
-Handles the core job-related operations:
-- Creating and updating jobs
-- Applying for jobs
-- Assigning freelancers
-- Completing and approving jobs
-- Managing payments
+## Overview
 
-### GigBlocksUserManager.sol
-Manages user profiles and reputation:
-- User registration
-- Profile updates
-- User ratings
-- Social media connections
-- ENS integration
+GigBlocks smart contracts manage the core functionality of our decentralized freelancing platform, including job management, user profiles, reputation systems, and ENS integration. These contracts are designed to operate on the Scroll blockchain, leveraging its Layer 2 scaling solutions for efficient and cost-effective transactions.
 
-### GigBlocksResolverScrollENS.sol
-Integrates with Scroll's ENS (Ethereum Name Service) for resolving ENS names to Ethereum addresses.
+## Contract Structure
 
-## Features
+Our smart contract architecture consists of the following main components:
 
-- Decentralized job marketplace
-- Reputation system with social media verification
-- ENS integration for user-friendly addresses
-- Secure escrow payments
-- User ratings and reviews
+- `GigBlocksMain.sol`: The main contract that orchestrates all platform operations and serves as the entry point for interactions.
+- `IGigBlocks.sol`: Interface defining the core functionalities of the GigBlocks platform.
+- `GigBlocksBase.sol`: Base contract containing shared functionalities and data structures.
+- `GigBlocksJobManagement.sol`: Handles job creation, application, assignment, completion, approvement, and claim payment.
+- `GigBlocksUserManager.sol`: Manages user registration, profile updates, and user-related operations.
+- `GigBlocksReputation.sol`: Implements the reputation system using ERC-721 mechanism.
+- `GigBlocksView.sol`: Provides view functions for querying platform data without modifying state.
 
-## License
+## Key Features
 
-This project is licensed under the MIT License.
+1. **Job Management**: 
+   - Create and post jobs
+   - Applying for a job
+   - Assign freelancers to jobs
+   - Complete jobs
+   - Approve jobs
+   - Claim payment
+
+2. **User Profiles**: 
+   - Register users (freelancers and clients)
+   - Update user profiles and preferences
+   - Manage user ratings
+
+3. **Reputation System**: 
+   - NFT-based reputation tokens
+   - Reputation scores based on completed projects and ratings
+   - Social media verification
+   - ENS Claiming
+
+4. **ENS Integration**: 
+   - Claim ENS subdomains as part of the reputation system
+   - Link ENS names to user address
+
+5. **Payment Handling**:
+   - Escrow system for secure payments
