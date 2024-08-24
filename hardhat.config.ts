@@ -13,31 +13,35 @@ const config: HardhatUserConfig = {
     settings: {
       optimizer: {
         enabled: true,
-        runs: 200
-      }
-    }
+        runs: 200,
+      },
+    },
   },
   paths: {
     sources: "./contracts",
   },
   networks: {
+    scrollDevnet: {
+      url: "https://l1sload-rpc.scroll.io",
+      accounts: PRIVATE_KEY !== undefined ? [PRIVATE_KEY] : [],
+      chainId: 2227728,
+    },
     scrollSepolia: {
-      url: 'https://sepolia-rpc.scroll.io',
-      accounts:
-        PRIVATE_KEY !== undefined ? [PRIVATE_KEY] : [],
+      url: "https://sepolia-rpc.scroll.io",
+      accounts: PRIVATE_KEY !== undefined ? [PRIVATE_KEY] : [],
     },
   },
   etherscan: {
     apiKey: {
-      scrollSepolia: SCROLLSCAN_API_KEY
+      scrollSepolia: SCROLLSCAN_API_KEY,
     },
     customChains: [
       {
-        network: 'scrollSepolia',
+        network: "scrollSepolia",
         chainId: 534351,
         urls: {
-          apiURL: 'https://api-sepolia.scrollscan.com/api',
-          browserURL: 'https://sepolia.scrollscan.com/',
+          apiURL: "https://api-sepolia.scrollscan.com/api",
+          browserURL: "https://sepolia.scrollscan.com/",
         },
       },
     ],
@@ -46,13 +50,15 @@ const config: HardhatUserConfig = {
     alphaSort: true,
     runOnCompile: true,
     disambiguatePaths: false,
-  }
+  },
 };
 
-task("contract-size", "Outputs the size of compiled contracts in bytes")
-  .setAction(async (_, { run }) => {
-    await run("compile");
-    await run("size-contracts");
-  });
+task(
+  "contract-size",
+  "Outputs the size of compiled contracts in bytes"
+).setAction(async (_, { run }) => {
+  await run("compile");
+  await run("size-contracts");
+});
 
 export default config;
