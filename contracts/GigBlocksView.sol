@@ -46,6 +46,30 @@ abstract contract GigBlocksView is GigBlocksJobManagement {
         return result;
     }
 
+    function getAppliedJobs(address _freelancer, uint256 _offset, uint256 _limit) external view override returns (Job[] memory) {
+        uint256[] memory appliedJobIds = new uint256[](_limit);
+        uint256 count = 0;
+
+        for (uint256 i = _offset; i < jobIds.length && count < _limit; i++) {
+            uint256 jobId = jobIds[i];
+            Applicant[] storage applicants = jobApplicants[jobId];
+            for (uint256 j = 0; j < applicants.length; j++) {
+                if (applicants[j].freelancerWalletAddress == _freelancer) {
+                    appliedJobIds[count] = jobId;
+                    count++;
+                    break;
+                }
+            }
+        }
+
+        Job[] memory result = new Job[](count);
+        for (uint256 i = 0; i < count; i++) {
+            result[i] = jobs[appliedJobIds[i]];
+        }
+
+        return result;
+    }
+
     function getClientJobs(address _client, uint256 _offset, uint256 _limit) external view override returns (Job[] memory) {
         uint256[] memory clientJobIds = new uint256[](_limit);
         uint256 count = 0;
@@ -91,6 +115,21 @@ abstract contract GigBlocksView is GigBlocksJobManagement {
     function getJobApplicantCount(uint256 _jobId) external view returns (uint256) {
         require(_jobId > 0 && _jobId <= jobIds.length, "Invalid job ID");
         return jobApplicants[_jobId].length;
+    }
+
+    function getAppliedJobCount(address _freelancer) external view override returns (uint256) {
+        uint256 count = 0;
+        for (uint256 i = 0; i < jobIds.length; i++) {
+            uint256 jobId = jobIds[i];
+            Applicant[] storage applicants = jobApplicants[jobId];
+            for (uint256 j = 0; j < applicants.length; j++) {
+                if (applicants[j].freelancerWalletAddress == _freelancer) {
+                    count++;
+                    break;
+                }
+            }
+        }
+        return count;
     }
 
     function getClientJobCount(address _client) public view override returns (uint256) {

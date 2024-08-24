@@ -47,8 +47,10 @@ interface IGigBlocks {
     function getActiveJobs(uint256 _offset, uint256 _limit) external view returns (Job[] memory);
     function getJobById(uint256 _jobId) external view returns (Job memory);
     function getJobApplicants(uint256 _jobId, uint256 _offset, uint256 _limit) external view returns (Applicant[] memory);
+    function getAppliedJobs(address _freelancer, uint256 _offset, uint256 _limit) external view returns (Job[] memory);
     function getActiveJobCount() external view returns (uint256);
     function getJobApplicantCount(uint256 _jobId) external view returns (uint256);
+    function getAppliedJobCount(address _freelancer) external view returns (uint256);
     function getFreelancerJobs(address _freelancer, uint256 _offset, uint256 _limit) external view returns (Job[] memory);
     function getClientJobs(address _client, uint256 _offset, uint256 _limit) external view returns (Job[] memory);
     function getClientJobCount(address _client) external view returns (uint256);
