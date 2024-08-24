@@ -35,6 +35,7 @@ abstract contract GigBlocksBase is Ownable, GigBlocksUserManager, IGigBlocks {
     error NotClient();
     error NotFreelancer();
     error NotJobOwner();
+    error InsufficientReputationScore();
     error JobDoesNotExist();
     error InvalidJobId();
     error InvalidJobStatus();
