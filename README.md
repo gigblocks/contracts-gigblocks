@@ -1,13 +1,39 @@
-# Sample Hardhat Project
+# GigBlocks
 
-This project demonstrates a basic Hardhat use case. It comes with a sample contract, a test for that contract, and a Hardhat Ignition module that deploys that contract.
+GigBlocks is a decentralized freelancing platform built on blockchain technology. It enables secure, transparent, and efficient interactions between clients and freelancers.
 
-Try running some of the following tasks:
+## Key Components
 
-```shell
-npx hardhat help
-npx hardhat test
-REPORT_GAS=true npx hardhat test
-npx hardhat node
-npx hardhat ignition deploy ./ignition/modules/Lock.ts
-```
+### GigBlocksMain.sol
+The main contract that ties together all the functionality of the GigBlocks platform.
+
+### GigBlocksJobManagement.sol
+Handles the core job-related operations:
+- Creating and updating jobs
+- Applying for jobs
+- Assigning freelancers
+- Completing and approving jobs
+- Managing payments
+
+### GigBlocksUserManager.sol
+Manages user profiles and reputation:
+- User registration
+- Profile updates
+- User ratings
+- Social media connections
+- ENS integration
+
+### GigBlocksResolverScrollENS.sol
+Integrates with Scroll's ENS (Ethereum Name Service) for resolving ENS names to Ethereum addresses.
+
+## Features
+
+- Decentralized job marketplace
+- Reputation system with social media verification
+- ENS integration for user-friendly addresses
+- Secure escrow payments
+- User ratings and reviews
+
+## License
+
+This project is licensed under the MIT License.
