@@ -8,7 +8,7 @@ import "./GigBlocksReputation.sol";
 abstract contract GigBlocksUserManager is ReentrancyGuard {
     using GigBlocksEnums for GigBlocksEnums.JobCategory;
 
-    GigBlocksReputationTesting4 public reputationContract;
+    GigBlocksReputationTesting5 public reputationContract;
 
     struct UserProfile {
         string profileIPFS;
@@ -44,7 +44,7 @@ abstract contract GigBlocksUserManager is ReentrancyGuard {
     error CannotRateSelf();
 
     constructor(address _reputationContractAddress) {
-        reputationContract = GigBlocksReputationTesting4(_reputationContractAddress);
+        reputationContract = GigBlocksReputationTesting5(_reputationContractAddress);
     }
 
     function register(
